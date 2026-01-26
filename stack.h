@@ -15,6 +15,13 @@
  
 typedef struct Stack Stack;
 
+typedef enum {
+    STACK_SUCCESS = 0,
+    STACK_ERROR_NULL,
+    STACK_ERROR_EMPTY,
+    STACK_ERROR_ALLOC
+} StackError;
+
 /// ============================================================
 /// Creation / Destruction
 /// ============================================================
@@ -52,7 +59,7 @@ Stack* stack_create(void);
 /// Time Complexity:
 ///		O(1)
 
-id stack_destroy(Stack* stack);
+void stack_destroy(Stack* stack);
 
 /// ============================================================
 /// Capacity / State
@@ -164,5 +171,16 @@ double stack_pop(Stack* stack);
 ///		O(1) after completion
 
 void stack_clear(Stack* stack);
+
+/// Description:
+///     Get the most recent error code for a stack.
+///
+/// Preconditions:
+///     stack != NULL
+///
+/// Returns:
+///     The last StackError set by an operation.
+
+StackError stack_get_error(const Stack* stack);
 
 #endif STACK_H
