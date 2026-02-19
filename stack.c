@@ -1,7 +1,8 @@
 #include "stack.h"
 
-#include <stdlib.h>
 #include <assert.h>
+#include <math.h>
+#include <stdlib.h>
 
 /// ============================================================
 /// Internal Structures
@@ -92,12 +93,12 @@ bool stack_is_empty(const Stack* stack)
 double stack_top(const Stack* stack)
 {
     if (!stack) {
-        return 0.0;
+        return NAN;
     }
 
     if (stack->size == 0) {
         ((Stack*)stack)->error = STACK_ERROR_EMPTY;
-        return 0.0;
+        return NAN;
     }
 
     ((Stack*)stack)->error = STACK_SUCCESS;
@@ -132,18 +133,14 @@ void stack_push(Stack* stack, double value)
 /// (9)
 double stack_pop(Stack* stack)
 {
-    if (!stack) {
-        return 0.0;
-    }
-
-    if (stack->size == 0) {
-        stack->error = STACK_ERROR_EMPTY;
-        return 0.0;
+    double value = stack_top(stack);
+    
+    if (!stack || stack->size == 0) {
+        return value;
     }
 
     StackNode* node = stack->top;
-    double value = node->value;
-
+    
     stack->top = node->next;
     free(node);
 
